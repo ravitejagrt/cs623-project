@@ -1,7 +1,6 @@
 
-import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class Transaction {
 
@@ -17,6 +16,10 @@ public class Transaction {
 
     //CREATE TABLE Stock (prod char(10), dep char(10), quantity integer);
     private static final String TABLE_CREATE_STOCK= "CREATE TABLE STOCK (PROD varchar(10) NOT NULL, DEP varchar(25) NOT NULL, QUANTITY integer)";
+    
+    private static final String SELECT_PRODUCT_QUERY = "SELECT PROD, PNAME, PRICE FROM PRODUCT";
+    private static final String SELECT_DEPOT_QUERY = "SELECT DEP, ADDR, VOLUME FROM DEPOT";
+    private static final String SELECT_STOCK_QUERY = "SELECT PROD, DEP, QUANTITY FROM STOCK";
     
     //ALTER TABLE Product ADD CONSTRAINT pk_product PRIMARY KEY (prod);
     private static final String ALTER_TABLE_PRODUCT_ADD_PKEY = "ALTER TABLE Product ADD CONSTRAINT pk_product PRIMARY KEY (PROD)";
@@ -53,47 +56,56 @@ public class Transaction {
 	static final String USER = "postgres";
 	static final String PASS = "root";
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
     	
     	Connection conn = null;
     	Statement statement = null;
-    	
-        try  {
-        	conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			statement = conn.createStatement();
-									
-			PreparedStatement productInsert = conn.prepareStatement(INSERT_PRODUCT);
-			PreparedStatement stockInsert = conn.prepareStatement(INSERT_STOCK);
-            
+    	Scanner scan = null;
+    	conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		statement = conn.createStatement();    	
+        try  {            
 			// Run list of insert commands
 			defineTablesAndData(statement);
-
-            //(p100, cd, 5) 
-            //(p100, d2, 50)
-			/*
-			 * productInsert.setString(1, "p100"); productInsert.setString(2, "cd");
-			 * productInsert.setFloat(3, 50);
-			 * 
-			 * stockInsert.setString(1, "p100"); stockInsert.setString(2, "d2");
-			 * stockInsert.setInt(3, 50);
-			 * 
-			 * // start transaction conn.setAutoCommit(false); productInsert.execute();
-			 * System.out.println("Product Entered: Record inserted in Product");
-			 * stockInsert.execute();
-			 * System.out.println("Stock Entered: Record inserted in Stock"); // end
-			 * transaction block, commit changes conn.commit();
-			 * 
-			 * // good practice to set it back to default true conn.setAutoCommit(true);
-			 */
+			System.out.println("\nData before Transaction.");
+			showData(statement);
+			Product product = new Product("p100", "cd", 5);
+			Stock stock = new Stock("p100", "d2",50);
+			doTransaction(conn, product, stock);
+			System.out.println("\nData after Transaction.");
+            showData(statement);
+            
+            System.out.println("Would you like to perform another transaction?(y/n):");
+            scan = new Scanner(System.in);
+            String isTransaction = scan.next();
+            
+        	switch(isTransaction.toLowerCase()) {
+        		case "y":
+        			// call method to do transaction 
+        			// it takes input from user
+        			// handled failure like revert if failed in middle of transaction
+        			// as group 5 we need to add product and stock only in our transaction
+        			
+        			// transaction starts here
+        			// set auto commit false
+        			// get product details from user
+        			product = getProductFromUser(scan);
+        			//insert product
+        			addProduct(product);
+        			// get stock details from user
+        			stock = getStockFromUser(scan);
+        			// insert stock
+        			addStock(stock);
+        			// commit()
+        			// set auto commit to true
+        			// in case of error rollback in catch block
+    			default:
+    				System.out.println("exit");
+    				break;
+        	}
+            
         } catch (Exception e) {
-        	System.out.println("Failed");
             e.printStackTrace();
-			/*
-			 * try { conn.rollback(); System.out.
-			 * println("Transaction failed. Any changes to the database during the transaction are reverted or rollback."
-			 * ); } catch (SQLException e1) { // TODO Auto-generated catch block
-			 * e1.printStackTrace(); }
-			 */
+			 
         } finally {
         	try {
 				if (conn != null)
@@ -105,6 +117,91 @@ public class Transaction {
 				se.printStackTrace();
 			}
         }
+    }
+    
+    public static Product getProductFromUser(Scanner scan) {
+    	Product product = new Product();
+    	System.out.println("Enter details of product:");
+    	System.out.println("Product Id:");
+    	product.setProd(scan.next());
+    	System.out.println("Product Name:");
+    	product.setpName(scan.next());
+    	System.out.println("Product Price:");
+    	product.setPrice(scan.nextFloat());
+		return product;
+    }
+    
+    public static Stock getStockFromUser(Scanner scan) {
+    	Stock stock = new Stock();
+    	System.out.println("Enter details of Stock:");
+    	System.out.println("Product Id:");
+    	stock.setProd(scan.next());
+    	System.out.println("Depot Id:");
+    	stock.setDep(scan.next());
+    	System.out.println("Quantity:");
+    	stock.setQuantity(scan.nextInt());
+    	return stock;
+    }
+    
+    public static void doTransaction(Connection conn, Product product, Stock stock) {    	
+    	PreparedStatement productInsert = null;
+    	PreparedStatement stockInsert = null;
+    	try {
+			productInsert = conn.prepareStatement(INSERT_PRODUCT);
+			stockInsert = conn.prepareStatement(INSERT_STOCK);
+	    				
+			productInsert.setString(1, product.getProd()); 
+			productInsert.setString(2, product.getpName());
+			productInsert.setFloat(3, product.getPrice());
+						
+			stockInsert.setString(1, stock.getProd()); 
+			stockInsert.setString(2, stock.getDep());
+			stockInsert.setInt(3, stock.getQuantity());
+			 
+			// start transaction with autoCommit false
+			conn.setAutoCommit(false); 
+			System.out.println("Transaction Started.");
+			System.out.println("Insert Product with data - prod:" + product.getProd() + ", pName:" + product.getpName() + ", price:" + product.getPrice());
+			productInsert.execute();
+			System.out.println("Product Entered: Record inserted in Product");
+			System.out.println("Insert Stock with data - prod:" + stock.getProd() + ", depot:" + stock.getDep() + ", quantity:" + stock.getQuantity());
+			stockInsert.execute();
+			System.out.println("Stock Entered: Record inserted in Stock"); 
+			// end transaction block, commit changes 
+			conn.commit();
+			
+			// good practice to set it back to default true 
+			conn.setAutoCommit(true);
+			System.out.println("Transaction completed.");
+			
+    	} catch (Exception e) {
+        	System.out.println("Transaction Failed. Below is the database error");
+			// TODO: handle exception
+            e.printStackTrace();
+            try { 
+            	conn.rollback(); System.out.
+			println("Transaction failed. Any changes to the database during the transaction failure are reverted or roll back.");
+            } catch (SQLException e1) { // TODO Auto-generated catch block
+			  e1.printStackTrace(); 
+			}
+		} finally {
+			try {
+				if(productInsert != null)
+					productInsert.close();
+				if(stockInsert != null)
+					stockInsert.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		 
+    }
+    
+    public static void addProduct(Product product) {
+    	
+    }
+    
+    public static void addStock(Stock stock) {
+    	
     }
 
     public static void defineTablesAndData(Statement statement) {
@@ -143,5 +240,60 @@ public class Transaction {
     	} catch (Exception e) {
             e.printStackTrace();
     	}
+    }
+    
+    public static void showData(Statement statement) {
+    	showProductsData(statement);
+    	showDepotsData(statement);
+    	showStocksData(statement);
+    	System.out.println();
+    }
+    
+    public static void showProductsData(Statement statement) {
+    	try {
+			ResultSet rs = statement.executeQuery(SELECT_PRODUCT_QUERY);
+			System.out.println("\nProducts Data\nprod\tpname\tprice\n" + "-----------------------------");
+			while(rs.next()) {
+				String prod = rs.getString(1);
+				String pname = rs.getString(2);
+				float price = rs.getFloat(3);
+				System.out.println(prod + "\t" + pname + "\t" + price);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public static void showDepotsData(Statement statement) {
+    	try {
+			ResultSet rs = statement.executeQuery(SELECT_DEPOT_QUERY);
+			System.out.println("\nDepot Data:\ndep\taddr\tvolume\n" + "-----------------------------");
+			while(rs.next()) {
+				String dep = rs.getString(1);
+				String addr= rs.getString(2);
+				int volume = rs.getInt(3);
+				System.out.println(dep + "\t" + addr + "\t" + volume);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public static void showStocksData(Statement statement) {
+    	try {
+			ResultSet rs = statement.executeQuery(SELECT_STOCK_QUERY);
+			System.out.println("\nDepot Data\nprod\tdep\tquantity\n" + "-----------------------------");
+			while(rs.next()) {
+				String prod = rs.getString(1);
+				String dep = rs.getString(2);
+				int quantity = rs.getInt(3);
+				System.out.println(prod + "\t" + dep + "\t" + quantity);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
