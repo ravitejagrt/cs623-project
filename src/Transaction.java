@@ -1,5 +1,4 @@
 
-
 /*
  * @author Ravi Teja Gajarla 
  */
@@ -19,12 +18,12 @@ public class Transaction {
     private static final String TABLE_CREATE_STOCK= "CREATE TABLE IF NOT EXISTS STOCK (PROD varchar(10) NOT NULL, DEP varchar(10) NOT NULL, QUANTITY integer,"
     		+ " CONSTRAINT fk_product FOREIGN KEY(PROD) REFERENCES PRODUCT(PROD), CONSTRAINT fk_depot FOREIGN KEY(DEP) REFERENCES DEPOT(DEP))";
     
-    private static final String ALTER_TABLE_PRODUCT_ADD_PKEY = "ALTER TABLE PRODUCT ADD CONSTRAINT IF NOT EXISTS pk_product PRIMARY KEY (PROD)";
-    private static final String ALTER_TABLE_PRODUCT_ADD_PRICE_CHECK = "ALTER TABLE PRODUCT ADD CONSTRAINT IF NOT EXISTS ck_product_price CHECK (PRICE > 0)";
-    private static final String ALTER_TABLE_DEPOT_ADD_PKEY = "ALTER TABLE DEPOT ADD CONSTRAINT pk_depot PRIMARY KEY (DEP)";
-    private static final String ALTER_TABLE_DEPOT_ADD_VOLUME_CHECK = "ALTER TABLE DEPOT ADD CONSTRAINT ck_depot_volume CHECK (VOLUME> 0)";
-    private static final String ALTER_TABLE_STOCK_ADD_FKEY_PROD = "ALTER TABLE Stock ADD CONSTRAINT fk_product FOREIGN KEY(PROD) REFERENCES Product(PROD)";
-	private static final String ALTER_TABLE_STOCK_ADD_FKEY_DEP = "ALTER TABLE Stock ADD CONSTRAINT fk_depot FOREIGN KEY(DEP) REFERENCES Depot(DEP)";
+//    private static final String ALTER_TABLE_PRODUCT_ADD_PKEY = "ALTER TABLE PRODUCT ADD CONSTRAINT IF NOT EXISTS pk_product PRIMARY KEY (PROD)";
+//    private static final String ALTER_TABLE_PRODUCT_ADD_PRICE_CHECK = "ALTER TABLE PRODUCT ADD CONSTRAINT IF NOT EXISTS ck_product_price CHECK (PRICE > 0)";
+//    private static final String ALTER_TABLE_DEPOT_ADD_PKEY = "ALTER TABLE DEPOT ADD CONSTRAINT pk_depot PRIMARY KEY (DEP)";
+//    private static final String ALTER_TABLE_DEPOT_ADD_VOLUME_CHECK = "ALTER TABLE DEPOT ADD CONSTRAINT ck_depot_volume CHECK (VOLUME> 0)";
+//    private static final String ALTER_TABLE_STOCK_ADD_FKEY_PROD = "ALTER TABLE Stock ADD CONSTRAINT fk_product FOREIGN KEY(PROD) REFERENCES Product(PROD)";
+//	  private static final String ALTER_TABLE_STOCK_ADD_FKEY_DEP = "ALTER TABLE Stock ADD CONSTRAINT fk_depot FOREIGN KEY(DEP) REFERENCES Depot(DEP)";
 	
     private static final String SELECT_PRODUCT_QUERY = "SELECT PROD, PNAME, PRICE FROM PRODUCT";
     private static final String SELECT_DEPOT_QUERY = "SELECT DEP, ADDR, VOLUME FROM DEPOT";
@@ -38,9 +37,9 @@ public class Transaction {
 	private static final String INSERT_DEPOT = "INSERT INTO DEPOT (DEP, ADDR, VOLUME)  VALUES (?,?,?)";
 	private static final String INSERT_STOCK = "INSERT INTO STOCK (PROD, DEP, QUANTITY)  VALUES (?,?,?)";
 	
-	private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE PROD=?";
-	private static final String DELETE_DEPOT = "DELETE FROM STOCK WHERE DEP=?";
-	private static final String DELETE_STOCK = "DELETE FROM STOCK WHERE PROD=? AND DEP=?";
+//	private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE PROD=?";
+//	private static final String DELETE_DEPOT = "DELETE FROM STOCK WHERE DEP=?";
+//	private static final String DELETE_STOCK = "DELETE FROM STOCK WHERE PROD=? AND DEP=?";
 	
 	// Database URL and credentials
 	static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/cs623";
@@ -265,7 +264,7 @@ public class Transaction {
 //			statement.execute(TABLE_DROP_DEPOT);
 //			System.out.println("Dropped existing tables STOCK, PRODUCT, DEPOT");
 			
-			boolean productTableCreated = statement.execute(TABLE_CREATE_PRODUCT);
+			statement.execute(TABLE_CREATE_PRODUCT);
 			System.out.println("PRODUCT TABLE CREATED WITH CONSTRAINTS");			
 			statement.execute(TABLE_CREATE_DEPOT);
 			System.out.println("DEPOT TABLE CREATED WITH CONSTRAINTS");			
