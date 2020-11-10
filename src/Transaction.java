@@ -55,13 +55,14 @@ public class Transaction {
         try  {            
 			// Run list of insert commands
 			defineTablesAndData(statement);
-			System.out.println("Perform transaction with the data Product:(p100, cd, 5) and Stock:(p100, d2, 5)");
-			System.out.println("\nData before Transaction.");
 			showData(statement);
-			Product product = new Product("p100", "cd", 5);
-			Stock stock = new Stock("p100", "d2",50);
-			doTransaction(conn, product, stock);
-			System.out.println("\nData after Transaction.");
+//			System.out.println("Perform transaction with the data Product:(p100, cd, 5) and Stock:(p100, d2, 5)");
+//			System.out.println("\nData before Transaction.");
+//			Product product = new Product("p100", "cd", 5);
+//			Stock stock = new Stock("p100", "d2",50);
+//			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+//			doTransaction(conn, product, stock);
+//			System.out.println("\nData after Transaction.");
             showData(statement);
             
             System.out.println("Would you like to perform Group5 transaction?\n"
@@ -127,12 +128,10 @@ public class Transaction {
     	try {			 
     		System.out.println("---Transaction started---");
 			// start transaction with autoCommit false
-    		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			conn.setAutoCommit(false); 
-			System.out.println("Transaction Started.");
 			Product product = getProductFromUser(scan);
-			Stock stock = getStockFromUser(scan);
 			addProduct(conn, product);
+			Stock stock = getStockFromUser(scan);
 			addStock(conn, stock);
 			// end transaction block, commit changes 
 			conn.commit();
@@ -157,7 +156,6 @@ public class Transaction {
     	try {			 
     		System.out.println("---Transaction started---");
 			// start transaction with autoCommit false
-    		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			conn.setAutoCommit(false); 
 			addProduct(conn, product);
 			addStock(conn, stock);
@@ -265,11 +263,11 @@ public class Transaction {
 //			System.out.println("Dropped existing tables STOCK, PRODUCT, DEPOT");
 			
 			statement.execute(TABLE_CREATE_PRODUCT);
-			System.out.println("PRODUCT TABLE CREATED WITH CONSTRAINTS");			
+			System.out.println("CREATE PRODUCT TABLE WITH CONSTRAINTS IF NOT EXISTS");			
 			statement.execute(TABLE_CREATE_DEPOT);
-			System.out.println("DEPOT TABLE CREATED WITH CONSTRAINTS");			
+			System.out.println("CREATE DEPOT TABLE WITH CONSTRAINTS IF NOT EXISTS");			
 			statement.execute(TABLE_CREATE_STOCK);
-			System.out.println("STOCK TABLE CREATED WITH CONSTRAINTS");
+			System.out.println("CREATE STOCK TABLE WITH CONSTRAINTS IF NOT EXISTS");
 			
 //			statement.execute(ALTER_TABLE_PRODUCT_ADD_PKEY);
 //			statement.execute(ALTER_TABLE_PRODUCT_ADD_PRICE_CHECK);
@@ -278,18 +276,19 @@ public class Transaction {
 //			statement.execute(ALTER_TABLE_STOCK_ADD_FKEY_PROD);
 //			statement.execute(ALTER_TABLE_STOCK_ADD_FKEY_DEP);
 			
-    		statement.execute(INSERT_PRODUCT_DATA);
-			System.out.println("PRODUCT DATA INSERTED INTO TABLE");
-    		statement.execute(INSERT_DEPOT_DATA);
-			System.out.println("DEPOT DATA INSERTED INTO TABLE");
-    		statement.execute(INSERT_STOCK_DATA);
-			System.out.println("STOCK DATA INSERTED INTO TABLE");
+//    		statement.execute(INSERT_PRODUCT_DATA);
+//			System.out.println("PRODUCT DATA INSERTED INTO TABLE");
+//    		statement.execute(INSERT_DEPOT_DATA);
+//			System.out.println("DEPOT DATA INSERTED INTO TABLE");
+//    		statement.execute(INSERT_STOCK_DATA);
+//			System.out.println("STOCK DATA INSERTED INTO TABLE");
     	} catch (Exception e) {
             e.printStackTrace();
     	}
     }
     
     public static void showData(Statement statement) {
+    	System.out.println("Data in the tables:");
     	showProductsData(statement);
     	showDepotsData(statement);
     	showStocksData(statement);
