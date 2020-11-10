@@ -1,4 +1,8 @@
 
+/*
+ * @author Ravi Teja Gajarla 
+ */
+
 public class Stock {
 	private String prod;
 	private String dep;

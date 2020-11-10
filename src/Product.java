@@ -1,3 +1,6 @@
+/*
+ * @author Ravi Teja Gajarla 
+ */
 
 public class Product {
 	private String prod;
