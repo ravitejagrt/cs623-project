@@ -8,8 +8,6 @@ Download the jdbc driver from the link here: [https://jdbc.postgresql.org/downlo
 
 Youtube link to view: [https://youtu.be/SMNOsRoFBWc](https://youtu.be/SMNOsRoFBWc)
 
-Google Drive link to download : [https://drive.google.com/file/d/1WQg-atW7DAFzm4TzvSUY7K1wkUeKn5um/view?usp=sharing](https://drive.google.com/file/d/1WQg-atW7DAFzm4TzvSUY7K1wkUeKn5um/view?usp=sharing)
-
 ### Below is the link for ER Diagram.
 
 [https://drive.google.com/file/d/1JMGz05tpCs_kEYf09XUVv_Wl5TkQG87c/view?usp=sharing](https://drive.google.com/file/d/1JMGz05tpCs_kEYf09XUVv_Wl5TkQG87c/view?usp=sharing)
