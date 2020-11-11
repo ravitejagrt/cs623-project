@@ -17,10 +17,10 @@ Google Drive link to download : [https://drive.google.com/file/d/1WQg-atW7DAFzm4
 
 ![Picture](https://github.com/ravitejagrt/cs623-project/blob/main/image%20(1).png)
 
-###Database Schema: 'cs623'
-###Tables: Product(#prod, pname, price), Depot(#dep, addr, volume), Stock(#prod, #dep, quantity)
+### Database Schema: 'cs623'
+### Tables: Product(#prod, pname, price), Depot(#dep, addr, volume), Stock(#prod, #dep, quantity)
 
-###Project Structure:
+### Project Structure:
 * Transaction Class and Object classes Product, Depot and Stock
 * In the main method, set the transaction isolation level to Serializable
 * Methods:
@@ -35,5 +35,5 @@ Google Drive link to download : [https://drive.google.com/file/d/1WQg-atW7DAFzm4
   
 Set the DB variables according to your own configuration.
 
-###Heads-up
+### Heads-up
 If the product, depot and stock tables has no data in your database or if the logs shows empty or no data in the tables, Insert depot data manually into the database before performing the transaction. With out depot, your transaction fails because to insert stock data depot is mandatory.
