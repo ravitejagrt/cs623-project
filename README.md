@@ -4,7 +4,7 @@
 
 Download it from the link here: [https://jdbc.postgresql.org/download.html](https://jdbc.postgresql.org/download.html)
 
-### Link to the video
+### Links to the Demo video
 
 Youtube link to view: [https://youtu.be/SMNOsRoFBWc](https://youtu.be/SMNOsRoFBWc)
 
