@@ -10,3 +10,17 @@ Download it from the link here: [https://jdbc.postgresql.org/download.html](http
 
 
 ![Picture](https://github.com/ravitejagrt/cs623-project/blob/main/image%20(1).png)
+
+Database Schema: 'cs623'
+Tables: Product(#prod, pname, price), Depot(#dep, addr, volume), Stock(#prod, #dep, quantity)
+
+Project Structure:
+* Transaction Class and Object classes Product, Depot and Stock
+* In the main method, set the transaction isolation level to Serializable
+* Methods:
+  * defineTables - Creates Product, Depot, Stock tables in the database if not exists
+  * getProductFromUser - To get product data from user
+  * getStockDataFromUser - To get stock data from user
+  * addProduct - Adds product to Product table
+  * addStock - Adds stock to Stock table
+  * doTransaction - This method actually does the transaction. Sets autocommit to false before starting transations, commits at the end after transaction is successful and sets  the auto commit to true at the end. In case of failure, the control goes to catch block in try catch and executes rollback.
