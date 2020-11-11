@@ -54,15 +54,16 @@ public class Transaction {
     	statement = conn.createStatement();    	
         try  {            
 			// Run list of insert commands
-			defineTablesAndData(statement);
+        	defineTables(statement);
 			showData(statement);
-//			System.out.println("Perform transaction with the data Product:(p100, cd, 5) and Stock:(p100, d2, 5)");
-//			System.out.println("\nData before Transaction.");
-//			Product product = new Product("p100", "cd", 5);
-//			Stock stock = new Stock("p100", "d2",50);
-//			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-//			doTransaction(conn, product, stock);
-//			System.out.println("\nData after Transaction.");
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			System.out.println("Perform transaction with the data Product:(p100, cd, 5) and Stock:(p100, d2, 5)");
+			System.out.println("\nData before Transaction.");
+			Product product = new Product("p100", "cd", 5);
+			Stock stock = new Stock("p100", "d2",50);
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			doTransaction(conn, product, stock);
+			System.out.println("\nData after Transaction.");
             showData(statement);
             
             System.out.println("Would you like to perform Group5 transaction?\n"
@@ -255,7 +256,7 @@ public class Transaction {
     	return stock;
     }
 
-    public static void defineTablesAndData(Statement statement) {
+    public static void defineTables(Statement statement) {
     	try {
 //    		statement.execute(TABLE_DROP_STOCK);
 //			statement.execute(TABLE_DROP_PRODUCT);
