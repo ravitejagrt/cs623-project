@@ -28,3 +28,6 @@ Download it from the link here: [https://jdbc.postgresql.org/download.html](http
   * DB_URL, USER for username, PASS for password.
   
 Set the DB variables according to your own configuration.
+
+###Heads-up
+If the product, depot and stock tables has no data in your database or if the logs shows empty or no data in the tables, Insert depot data manually into the database before performing the transaction. With out depot, your transaction fails because to insert stock data depot is mandatory.

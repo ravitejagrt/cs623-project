@@ -57,18 +57,26 @@ public class Transaction {
         	defineTables(statement);
 			showData(statement);
 			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			System.out.println("Perform transaction with the data Product:(p100, cd, 5) and Stock:(p100, d2, 5)");
-			System.out.println("\nData before Transaction.");
-			Product product = new Product("p100", "cd", 5);
-			Stock stock = new Stock("p100", "d2",50);
-			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			doTransaction(conn, product, stock);
-			System.out.println("\nData after Transaction.");
+//			System.out.println("Perform transaction with the data Product:(p100, cd, 5) and Stock:(p100, d2, 5)");
+//			System.out.println("\nData before Transaction.");
+//			Product product = new Product("p100", "cd", 5);
+//			Stock stock = new Stock("p100", "d2",50);
+//			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+//			doTransaction(conn, product, stock);
+//			System.out.println("\nData after Transaction.");
             showData(statement);
+
+            scan = new Scanner(System.in);
             
+            System.out.println("If there is no depot data, add one.");
+            System.out.println("Would you like to add depot:\n(y/n)");
+            String isDepot = scan.next();
+            if(isDepot.toLowerCase().contentEquals("y")) {
+            	Depot depot = getDepotFromUser(scan);
+            	addDepot(conn, depot);
+            }
             System.out.println("Would you like to perform Group5 transaction?\n"
             		+ "You should be able to enter product and stock details as part of the transaction.\n(y/n):");
-            scan = new Scanner(System.in);
             String isTransaction = scan.next();
             
         	switch(isTransaction.toLowerCase()) {
