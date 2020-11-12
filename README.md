@@ -6,7 +6,7 @@ Download the jdbc driver from the link here: [https://jdbc.postgresql.org/downlo
 
 ### Links to the Demo video
 
-Youtube link to view: [https://youtu.be/SMNOsRoFBWc](https://youtu.be/SMNOsRoFBWc)
+Link to demo video: [https://drive.google.com/file/d/1WQg-atW7DAFzm4TzvSUY7K1wkUeKn5um/view?usp=sharing](https://drive.google.com/file/d/1WQg-atW7DAFzm4TzvSUY7K1wkUeKn5um/view?usp=sharing)
 
 ### Below is the link for ER Diagram.
 
