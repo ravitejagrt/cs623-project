@@ -1,4 +1,4 @@
-# cs623-project
+# CS623-Project Team 5
 
 ### Add postgresql jdbc driver into the project once the project is cloned into the system folder. And add it to the buildpath.
 
